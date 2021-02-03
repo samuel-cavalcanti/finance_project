@@ -1,0 +1,66 @@
+{% extends "layouts/layout.html.jinja2" %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block main %}
+<form action="/register" method="post">
+    <div class="form-group">
+
+        <input autocomplete="off" autofocus class="form-control" id="username" name="username" placeholder="Username"
+               type="text">
+
+    </div>
+    <div class="form-group">
+        <input class="form-control" id="password" name="password" placeholder="Password" type="password">
+    </div>
+    <div class="form-group">
+        <input class="form-control" id="confirmPassword" placeholder="Confirm Password" type="password">
+    </div>
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="sendSoulCheckBox">
+        <label class="form-check-label" for="sendSoulCheckBox">I agree to sell my soul</label>
+    </div>
+    <button class="btn btn-primary" id="submitButton" type="submit" disabled>Register</button>
+
+    <script>
+        const passwordInput = document.querySelector('#password')
+        const confirmPassword = document.querySelector('#confirmPassword')
+        const submitButton = document.querySelector('#submitButton')
+        const sendSoulCheckBox = document.querySelector('#sendSoulCheckBox')
+
+        passwordInput.addEventListener('keyup', checkPassword)
+        confirmPassword.addEventListener('keyup', checkPassword)
+        sendSoulCheckBox.addEventListener('change', checkCheckBox)
+
+        let currentPassword = ''
+        let currentConfirmPassword = ''
+        let sellSoulConfirmed = false
+
+        function checkPassword() {
+            currentPassword = passwordInput.value
+            currentConfirmPassword = confirmPassword.value
+
+            enableRegister()
+        }
+
+        function checkCheckBox() {
+            sellSoulConfirmed = sendSoulCheckBox.checked;
+            enableRegister()
+        }
+
+
+        function enableRegister() {
+            if (sellSoulConfirmed === false)
+                return
+
+            if (currentPassword !== currentConfirmPassword || currentPassword === '')
+                submitButton.disabled = true;
+            else
+                submitButton.disabled = false;
+        }
+
+    </script>
+</form>
+{% endblock %}

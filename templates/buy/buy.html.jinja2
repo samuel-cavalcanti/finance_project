@@ -1,0 +1,48 @@
+{% extends "layouts/layout.html.jinja2" %}
+
+
+{% block title %}
+    buy
+{% endblock %}
+
+{% block main %}
+    <form action="/buy" method="post">
+
+        {% include "layouts/inputQuote.html.jinja2" %}
+
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" id="shares" name="shares" placeholder="shares"
+                   type="number" min="1">
+
+        </div>
+
+        <button class="btn btn-primary" id="submitButton" type="submit" disabled> buy</button>
+
+        <script>
+            const symbol = document.querySelector('#symbol')
+            const sharesInput = document.querySelector('#shares')
+            const submitButton = document.querySelector('#submitButton')
+            symbol.addEventListener('keyup', checksymbol)
+            sharesInput.addEventListener('keyup', checkSharesInput)
+            sharesInput.addEventListener('click', checkSharesInput)
+
+            let symbolStatus = false;
+            let sharesStatus = false;
+
+            function checksymbol() {
+                symbolStatus = symbol.value !== ''
+            }
+
+            function checkSharesInput() {
+                sharesStatus = sharesInput.value !== ''
+
+                enableSubmit()
+            }
+
+            function enableSubmit() {
+                submitButton.disabled = !(sharesStatus && symbolStatus)
+            }
+
+        </script>
+    </form>
+{% endblock %}

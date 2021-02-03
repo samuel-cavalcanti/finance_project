@@ -1,0 +1,120 @@
+{% extends "layouts/layout.html.jinja2" %}
+
+
+{% block title %}
+    Sell
+{% endblock %}
+
+{% block main %}
+    <form action="/sell" method="post">
+
+
+        <div class="form-group">
+            <label for="selectSymbol">Select Symbol </label>
+        </div>
+
+        <div class="form-group">
+            <select class="form-control" id="selectSymbol" name="symbol">
+                <option value="">Select symbol</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="selectShares">Select number of shares </label>
+        </div>
+
+        <div class="form-group">
+            <select class="form-control" id="selectShares" name="shares" disabled
+            ></select>
+        </div>
+
+        <button class="btn btn-primary" id="submitButton" type="submit" disabled>Sell</button>
+
+        <script>
+
+
+            const selectSymbol = document.querySelector('#selectSymbol')
+            const selectShares = document.querySelector('#selectShares')
+
+            const submitButton = document.querySelector('#submitButton')
+            selectSymbol.addEventListener('change', checkSelectedSymbol)
+            selectSymbol.addEventListener('click', checkSelectedSymbol)
+            selectShares.addEventListener('keyup', checkSharesInput)
+            selectShares.addEventListener('click', checkSharesInput)
+
+            let sharesStatus = false
+            let totalShares = undefined
+            let companies =
+                {{ companies }};
+
+
+            createOptions()
+
+            function checkSelectedSymbol() {
+                totalShares = companies[selectSymbol.value]
+                console.log(totalShares)
+
+                if (totalShares !== undefined) {
+                    selectShares.max = totalShares + 1
+                    selectShares.disabled = false
+                } else {
+                    selectShares.max = undefined
+                    selectShares.disabled = true
+                }
+
+                createSharesOptions()
+
+                enableSubmit()
+            }
+
+            function checkSharesInput() {
+
+                if (totalShares === undefined)
+                    return
+
+                const currentShares = parseInt(selectShares.value)
+
+
+                sharesStatus = currentShares !== undefined && currentShares >= 1 && currentShares <= totalShares
+
+
+                console.log(sharesStatus, totalShares)
+                enableSubmit()
+            }
+
+            function enableSubmit() {
+
+                submitButton.disabled = !(totalShares !== undefined && sharesStatus)
+            }
+
+            function createOptions() {
+                if (!companies)
+                    return
+
+                Object.entries(companies).forEach(([symbol, shares]) => {
+                    const option = document.createElement("option")
+                    option.text = symbol
+
+                    selectSymbol.add(option)
+                })
+            }
+
+            function createSharesOptions() {
+                if (selectShares.childElementCount > 0) {
+                    selectShares.innerHTML = "";
+                }
+
+                for (let i = 1; i <= totalShares; i++) {
+                    const option = document.createElement("option")
+                    option.text = i.toString()
+                    option.value = i.toString()
+
+                    selectShares.add(option)
+                }
+
+            }
+
+
+        </script>
+    </form>
+{% endblock %}

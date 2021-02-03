@@ -1,0 +1,12 @@
+{% extends "layouts/layout.html.jinja2" %}
+
+{% block title %}
+    Bought
+{% endblock %}
+
+{% block main %}
+    <h6 class="text-center"> you bought {{ shares }} shares of {{ company['name'] }}.
+        Total cost $ {{ company["price"]* shares }}</h6>
+    <button class="btn btn-primary" onclick="location.href='/'">Go Back</button>
+
+{% endblock %}

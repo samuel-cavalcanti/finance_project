@@ -1,0 +1,52 @@
+{% extends "layouts/layout.html.jinja2" %}
+
+{% block title %}
+    portfolio
+{% endblock %}
+
+{% block main %}
+    <table class="table table-hover ">
+        <thead class="thead-dark">
+        <tr id="headers">
+
+
+        </tr>
+        </thead>
+        <tbody id="tableBody">
+
+
+        </tbody>
+    </table>
+
+
+    <script>
+        const transactions = {{ transactions }};
+        const headers = document.querySelector('#headers')
+        const tableBody = document.querySelector('#tableBody')
+
+        Object.entries(transactions[0]).forEach(([key, value]) => {
+            const header = document.createElement('th')
+
+            header.scope = 'col'
+            header.innerHTML = key
+
+            headers.appendChild(header)
+
+        })
+
+        transactions.forEach((transaction) => {
+            const row = document.createElement('tr')
+            tableBody.appendChild(row)
+
+            Object.entries(transaction).forEach(([key, value]) => {
+                const col = document.createElement('td')
+                col.innerHTML = value
+                row.appendChild(col)
+            })
+
+        })
+
+
+    </script>
+
+{% endblock %}

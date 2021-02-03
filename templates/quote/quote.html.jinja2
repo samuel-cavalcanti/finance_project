@@ -1,0 +1,26 @@
+{% extends "layouts/layout.html.jinja2" %}
+
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+    <form action="/quote" method="post">
+
+        {% include "layouts/inputQuote.html.jinja2" %}
+
+        <button class="btn btn-primary" id="submitButton" type="submit" disabled>quote</button>
+
+        <script>
+            const symbol = document.querySelector('#symbol')
+            const submitButton = document.querySelector('#submitButton')
+            symbol.addEventListener('keyup', enableSubmit)
+
+            function enableSubmit() {
+                submitButton.disabled = symbol.value === ''
+            }
+
+        </script>
+    </form>
+{% endblock %}

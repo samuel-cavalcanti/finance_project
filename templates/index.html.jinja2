@@ -1,0 +1,98 @@
+{% extends "layouts/layout.html.jinja2" %}
+
+{% block title %}
+    portfolio
+{% endblock %}
+
+{% block main %}
+    <table class="table table-hover ">
+        <thead class="thead-dark">
+        <tr id="headers">
+            {% for header in headers %}
+                <th scope="col">{{ header }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody id="tableBody">
+        {% for row in table %}
+            <tr>
+                {% for col in row %}
+                    <td>{{ col }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        <tr>
+
+            <td colspan="3"></td>
+            <td>{{ stocks_total }}</td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <div class="container text-right ">
+        <blockquote class="blockquote">
+            <p class="mb-0" id="grandTotal"><a class="font-weight-bold">Grand Total </a></p>
+            <footer class="blockquote-footer">i.e., stocks’ total value plus cash</footer>
+        </blockquote>
+    </div>
+
+    <div class="container text-right">
+        <blockquote class="blockquote">
+            <p class="mb-0"><a class="font-weight-bold">current cash balance </a>$ {{ cash }} </p>
+        </blockquote>
+    </div>
+
+    <script>
+        {#const headersName = ['Company', 'Shares', 'Current Shares Price', 'Current Total Shares Price']#}
+
+        const headers = document.querySelector('#headers')
+        const grandTotalElement = document.querySelector("#grandTotal")
+        const userShares = {{userShares}};
+        let grandTotal = {{ cash }};
+
+        Object.entries(userShares[0]).forEach(addHeader)
+        addHeader(["current total price"])
+        userShares.forEach(addCompany)
+
+        grandTotalElement.innerHTML += grandTotal.toFixed(2);
+
+
+        function addHeader([key]) {
+            const headerElement = document.createElement('th')
+
+            headerElement.scope = 'col'
+
+            headerElement.innerHTML = key
+
+            headers.appendChild(headerElement)
+        }
+
+        function addCompany(company) {
+            const row = document.createElement('tr')
+            tableBody.appendChild(row)
+
+            const currentTotalPrice = company['current price'] * company.shares
+            grandTotal += currentTotalPrice
+
+            console.log(grandTotal)
+
+
+            Object.entries(company).forEach(([key, value]) => {
+                addColumn(row, value)
+            })
+
+            addColumn(row, currentTotalPrice)
+
+        }
+
+        function addColumn(row, value) {
+            const col = document.createElement('td')
+            col.innerHTML = typeof (value) == 'number' ? value.toFixed(2) : value
+            row.appendChild(col)
+        }
+
+
+    </script>
+
+{% endblock %}

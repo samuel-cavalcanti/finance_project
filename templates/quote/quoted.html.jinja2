@@ -1,0 +1,9 @@
+{% extends "layouts/layout.html.jinja2" %}
+
+{% block title %}
+Quote
+{% endblock %}
+
+{% block main %}
+<h6 class="text-center"> A share of {{quote["name"]}} ({{quote["symbol"]}}) cost $ {{quote["price"]}}</h6>
+{% endblock %}
